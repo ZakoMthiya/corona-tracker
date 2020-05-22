@@ -1,7 +1,6 @@
-
-  <div class="ui inverted dimmer" [class.active]="loading">
-    <div class="ui text loader">Collecting Data</div>
-  </div>
+<div class="ui inverted dimmer" [class.active]="loading">
+  <div class="ui text loader">Collecting Data</div>
+</div>
 
 <div class="jumbotron bg-white text-center">
   <h1 class="display-4">Corona Tracker Country Wise</h1>
@@ -11,6 +10,7 @@
     <div class="form-group col-lg-5 mx-auto">
       <label for="c">Select Country</label>
       <select class="form-control" name="" id="c" #input (change)="updateValues(input.value)">
+        <option selected value="South Africa">South Africa</option>
         <option *ngFor="let country of countries" value="{{country}}">{{ country }}</option>
       </select>
     </div>
@@ -20,23 +20,28 @@
     [totalRecovered]='totalRecovered'></app-dashboard-card>
 
   <div class="row">
-    <div class="col">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Serial No.</th>
-            <th>Date</th>
-            <th>Cases</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let case of selectedCountryData; index as i">
-            <td>{{ i + 1}}</td>
-            <td>{{ case.date | date}}</td>
-            <td>{{ case.cases }}</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="col mat-elevation-z8">
+
+      <mat-table [dataSource]="dataSource" matSort class="">
+
+        <ng-container matColumnDef="date">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Dates </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.date | date}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="cases">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Cases </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.cases}} </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="tableColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: tableColumns;"></mat-row>
+
+      </mat-table>
+      <mat-paginator [pageSizeOptions]="[ 5, 10, 20, 25]" showFirstLastButtons>
+</mat-paginator>
+
+
     </div>
     <div class="col">
       <google-chart [data]="lineChart"></google-chart>
@@ -46,3 +51,6 @@
 
   </div>
 </div>
+<hr>
+
+

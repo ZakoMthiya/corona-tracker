@@ -1,6 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { Ng2GoogleChartsModule, GoogleChartsSettings } from 'ng2-google-charts';
+import {MatTableModule} from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material';
+import {MatSortModule} from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,6 +13,7 @@ import { CountriesComponent } from './components/countries/countries.component';
 import { HttpClientModule } from '@angular/common/http'
 import { DataServiceService } from './services/data-service.service';
 import { DashboardCardComponent } from './components/dashboard-card/dashboard-card.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -23,7 +27,11 @@ import { DashboardCardComponent } from './components/dashboard-card/dashboard-ca
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    Ng2GoogleChartsModule
+    Ng2GoogleChartsModule,
+    BrowserAnimationsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
   ],
   providers: [
     DataServiceService

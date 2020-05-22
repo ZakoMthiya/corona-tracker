@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataServiceService } from 'src/app/services/data-service.service';
 import { GloabalDataSummary } from 'src/app/models/global-data';
 import { DateWiseData } from 'src/app/models/date-wise-data';
 import { GoogleChartInterface } from 'ng2-google-charts';
 import { merge } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
 
 @Component({
   selector: 'app-countries',
@@ -26,7 +27,23 @@ export class CountriesComponent implements OnInit {
     chartType: 'LineChart'
   };
 
+  // Mat table
+  tableColumns: string[] = ['date', 'cases'];
+  dataSource;
+
+  pageIndex:number = 0;
+  pageSize:number = 50;
+  lowValue:number = 0;
+  highValue:number = 10;
+
   constructor(private dataService: DataServiceService) { }
+
+  @ViewChild(MatSort, {static: false}) sort: MatSort;
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+
+  ngAfterViewInit (){
+    this.dataSource.sort = this.sort;
+  }
 
   ngOnInit() {
 
@@ -67,7 +84,7 @@ export class CountriesComponent implements OnInit {
       dataTable: dataTable,
       //firstRowIsData: true,
       options: {
-        height: 500,
+        height: 400,
         animation: {
           duration: 1000,
           easing: 'out',
@@ -88,7 +105,10 @@ export class CountriesComponent implements OnInit {
       }
     })
     this.selectedCountryData = this.dateWiseData[country];
-    console.log(this.selectedCountryData);
+    this.dataSource = new MatTableDataSource(this.selectedCountryData);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    console.log(this.sort);
     this.updateChart();
   }
 }
