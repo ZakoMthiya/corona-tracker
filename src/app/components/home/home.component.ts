@@ -10,6 +10,7 @@ import { GoogleChartInterface } from 'ng2-google-charts';
 })
 export class HomeComponent implements OnInit {
 
+  loading = true;
   totalConfirmed = 0;
   totalActive = 0;
   totalDeaths = 0;
@@ -47,7 +48,10 @@ export class HomeComponent implements OnInit {
         })
 
         this.initChart('confirmed');
-      })
+      }),
+      complete: () => {
+        this.loading = false;
+      }
     })
   }
 
@@ -100,7 +104,11 @@ export class HomeComponent implements OnInit {
       dataTable: dataTable,
       //firstRowIsData: true,
       options: {
-        height: 500
+        height: 500,
+        animation: {
+          duration: 1000,
+          easing: 'out',
+        }
       },
 
     }
